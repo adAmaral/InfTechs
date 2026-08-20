@@ -129,3 +129,13 @@ A equipe deve respeitar as condições de uso e a documentação da fonte, citar
 
 - Azevedo, Ana; Santos, Manuel Filipe. *KDD, SEMMA and CRISP-DM: A Parallel Overview*. IADIS, 2008. Arquivo compartilhado no projeto.
 - Ferreira, Júlio César; Rosa, Carla Regina Mazia; Steiner, Maria Teresinha Ars. *Knowledge Discovery in Database e Data Mining: uma contribuição bibliométrica*. ENEGEP, 2018. Arquivo compartilhado no projeto.
+
+## 9. Landing page pública e atualização dos relatórios
+
+O InfTechs passou a incluir uma landing page pública de relatórios analíticos. A interface apresenta indicadores por família de componente, gráficos de notas e volume de avaliações, tabela filtrável de peças equivalentes e comparação entre preço antigo e preço atual quando existem snapshots históricos do mesmo produto.
+
+A atualização é organizada em snapshots versionados. Cada snapshot registra a versão do dataset, a fonte, a data de geração, a quantidade de produtos e avaliações processados, as métricas por família e as comparações de produtos pareados. Um job periódico reprocessa o artefato analítico publicado pelo pipeline e grava uma nova versão no banco de dados, permitindo acompanhar mudanças entre execuções.
+
+A fonte continua sendo explicitamente o **Amazon Reviews 2023**. A comparação de preços só pode ser considerada temporal quando há pelo menos duas observações do mesmo produto ou de uma equivalência definida por família e marca. O campo de preço isolado da fonte é um snapshot e não representa, sozinho, um histórico de inflação. Por isso, o painel usa a expressão **variação de preço observada** ou **estimativa de inflação sobre os produtos pareados**, sem apresentá-la como índice oficial de inflação.
+
+A landing page segue o CRISP-DM: compreensão do negócio para definir a comparação; compreensão dos dados para mapear avaliações e metadados; preparação para limpar e parear produtos; modelagem para calcular métricas; avaliação para verificar consistência; e implantação para disponibilizar os relatórios públicos. Os documentos, o pipeline e os snapshots devem ser versionados com a data e a versão do dataset usada em cada atualização.

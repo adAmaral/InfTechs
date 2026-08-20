@@ -32,3 +32,23 @@ Os registros inválidos serão enviados para uma tabela de rejeições com motiv
 ## Particionamento
 
 A camada Parquet será particionada por `component_family` e ano de `review_timestamp`. Os dados brutos não serão carregados integralmente em memória. A leitura ocorrerá em lotes, com amostragem determinística por hash do identificador do produto até que o tamanho do corpus tratado esteja entre 800 MB e 1,2 GB.
+
+## Campos da landing page e dos snapshots
+
+A camada de relatórios adiciona uma dimensão temporal ao dicionário original. Os preços antigos e atuais só devem ser preenchidos quando houver observações comparáveis do mesmo produto ou de uma equivalência documentada.
+
+| Campo | Tipo | Definição | Regra |
+|---|---|---|---|
+| `dataset_version` | string | Versão ou identificador do lote processado | Obrigatório em cada snapshot |
+| `snapshot_generated_at` | datetime UTC | Momento de geração do relatório | Usado para ordenar versões |
+| `old_price_usd` | decimal | Primeiro preço observado para a peça equivalente | Nulo se não houver histórico |
+| `current_price_usd` | decimal | Último preço observado para a peça equivalente | Nulo se não houver histórico |
+| `variation_pct` | decimal | `(current_price_usd - old_price_usd) / old_price_usd * 100` | Não calcular quando o preço antigo for zero ou ausente |
+| `equivalence_key` | string | Chave de pareamento por produto, família e marca | Deve ser auditável |
+| `inflation_estimate` | decimal | Média da variação percentual dos itens pareados | É uma estimativa observada, não índice oficial |
+| `source` | string | Fonte do relatório | Deve conter `Amazon Reviews 2023` |
+| `report_status` | string | Estado do snapshot | `ready`, `failed` ou `partial` |
+
+## Atualização automática
+
+A landing page consulta o snapshot mais recente armazenado no banco. O job periódico busca um artefato analítico produzido pelo pipeline, valida a fonte, persiste a nova versão e mantém as versões anteriores para comparação. A rotina deve ser idempotente e não deve substituir snapshots válidos sem registrar uma nova versão.

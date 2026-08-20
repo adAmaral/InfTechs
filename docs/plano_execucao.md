@@ -27,3 +27,23 @@ Produzir estatísticas por família, marca e faixa de preço; comparar nota méd
 ## Critérios de conclusão da primeira versão
 
 A primeira versão será considerada pronta quando houver: fonte documentada; corpus entre 800 MB e 1,2 GB; dicionário de dados; relatório de qualidade; pelo menos três gráficos exploratórios; baseline reproduzível; e registro do commit do código usado para gerar a camada tratada.
+
+## Etapa 7 — Publicação dos relatórios
+
+A camada final do InfTechs será uma landing page pública construída como dashboard analítico. Ela exibirá métricas por família, evolução temporal das avaliações, preço médio observado e uma tabela de equivalências com filtros por família, marca e faixa de preço.
+
+## Etapa 8 — Pareamento e estimativa de inflação observada
+
+Para comparar preços antigos e recentes, os produtos serão pareados por identificador do produto quando possível. Quando o identificador não estiver disponível em todos os snapshots, será usada uma chave composta auditável com família, marca e atributos técnicos normalizados. A variação será calculada pela fórmula `((preço atual - preço antigo) / preço antigo) × 100`. A média ou mediana das variações dos itens pareados será apresentada como estimativa de inflação observada sobre os produtos, e não como índice oficial de inflação.
+
+## Etapa 9 — Snapshots e atualização periódica
+
+Cada processamento gerará um snapshot contendo a versão do dataset, data de geração, contagens, métricas por família e comparações de produtos. O job periódico validará um artefato JSON produzido pelo pipeline, persistirá uma nova versão no banco e deixará as versões anteriores disponíveis para auditoria. A landing page sempre consultará o snapshot mais recente com status `ready`.
+
+## Etapa 10 — Governança da atualização
+
+A atualização automática deverá registrar a origem `Amazon Reviews 2023`, o hash ou identificador do lote, o período coberto e as limitações de preço. Caso não existam snapshots históricos suficientes, o painel deverá informar que a comparação temporal está indisponível, sem preencher valores estimados artificialmente.
+
+## Etapa 11 — Persistência das observações históricas
+
+Além do artefato analítico externo, o sistema web mantém uma tabela de observações históricas de preço. O pipeline pode inserir registros com versão do dataset, produto, família, marca, data de observação e preço. O job periódico usa essas observações persistidas como fonte principal quando a URL de relatório não está configurada, calcula os pares antigo–atual e grava o snapshot de forma idempotente por `dataset_version`.
