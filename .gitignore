@@ -1,0 +1,13 @@
+# Dados brutos e processados de grande porte
+/data/raw/
+/data/processed/products.jsonl
+/data/processed/reviews.jsonl
+/data/processed/*.parquet
+
+# Relatórios locais de execução podem ser versionados apenas se pequenos
+/data/processed/run_report.json
+
+# Ambiente Python
+__pycache__/
+*.py[cod]
+.venv/
