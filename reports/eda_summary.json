@@ -1,0 +1,40 @@
+{
+  "run_id": "98c757a2e4b94f5ba90be1717ca64558",
+  "source_mode": "stream",
+  "reviews": 16229,
+  "products": 8000,
+  "rating_mean": 4.321338344938074,
+  "rating_std": 1.2312108865500173,
+  "rating_percentiles": {
+    "p10": 2.0,
+    "p50": 5.0,
+    "p90": 5.0
+  },
+  "positive_rate": 0.8234641690800419,
+  "verified_rate": 0.9158913056873498,
+  "price_missing_pct": 57.087500000000006,
+  "price_median_observed": 43.99,
+  "sentiment_mean": 0.2723780516359603,
+  "text_length_mean": 311.7211781379013,
+  "review_year_min": 2000,
+  "review_year_max": 2023,
+  "rating_counts": {
+    "1.0": 1288,
+    "2.0": 613,
+    "3.0": 964,
+    "4.0": 2095,
+    "5.0": 11269
+  },
+  "family_review_counts": {
+    "case": 288,
+    "cooling": 1381,
+    "cpu": 177,
+    "gpu": 577,
+    "motherboard": 255,
+    "peripherals": 6902,
+    "power_supply": 273,
+    "ram": 1051,
+    "storage": 5325
+  },
+  "imbalance_ratio_pos_neg": 4.66457242582897
+}

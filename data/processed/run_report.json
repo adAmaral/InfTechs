@@ -1,0 +1,29 @@
+{
+  "run_id": "98c757a2e4b94f5ba90be1717ca64558",
+  "source": {
+    "mode": "stream",
+    "metadata_url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/meta_categories/meta_Electronics.jsonl.gz",
+    "review_url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Electronics.jsonl.gz",
+    "product_selection": "lowest SHA-256 parent_asin hashes in the inspected metadata prefix"
+  },
+  "target_gib": 0.25,
+  "selection_fraction": 1.0,
+  "products_selected": 8000,
+  "reviews_selected": 16287,
+  "metadata_bytes": 28939417,
+  "reviews_bytes": 9777412,
+  "total_processed_bytes": 38716829,
+  "meta_stats": {
+    "meta_lines": 250000,
+    "unmatched": 228430,
+    "invalid_parent": 0,
+    "review_required": 228430
+  },
+  "rejections": 400,
+  "rejection_log_limit": 400,
+  "rejection_log_truncated": true,
+  "rejection_reasons": {
+    "review_required": 400
+  },
+  "generated_at_unix": 1794160224
+}

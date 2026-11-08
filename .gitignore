@@ -2,12 +2,19 @@
 /data/raw/
 /data/processed/products.jsonl
 /data/processed/reviews.jsonl
+/data/processed/parquet/
 /data/processed/*.parquet
+/data/processed/acquisition_rejections.jsonl
 
-# Relatórios locais de execução podem ser versionados apenas se pequenos
-/data/processed/run_report.json
+# Relatórios tabulares grandes; figuras e JSON resumo entram no Git
+/reports/products_clean.csv
+/reports/reviews_clean.csv
 
 # Ambiente Python
 __pycache__/
 *.py[cod]
 .venv/
+venv/
+
+# Modelos locais grandes (o escolhido entra se for pequeno)
+# /models/

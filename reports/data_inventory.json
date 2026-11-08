@@ -1,0 +1,184 @@
+{
+  "run_id": "98c757a2e4b94f5ba90be1717ca64558",
+  "source_mode": "stream",
+  "products": {
+    "dataset": "products_raw",
+    "records": 8000,
+    "fields": [
+      {
+        "name": "author",
+        "records_present": 1,
+        "coverage_pct": 0.01
+      },
+      {
+        "name": "average_rating",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "bought_together",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "categories",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "component_family",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "description",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "details",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "features",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "images",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "main_category",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "parent_asin",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "price",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "rating_number",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "store",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "subtitle",
+        "records_present": 1,
+        "coverage_pct": 0.01
+      },
+      {
+        "name": "title",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "videos",
+        "records_present": 8000,
+        "coverage_pct": 100.0
+      }
+    ]
+  },
+  "reviews": {
+    "dataset": "reviews_raw",
+    "records": 16287,
+    "fields": [
+      {
+        "name": "asin",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "component_family",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "helpful_vote",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "images",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "parent_asin",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "rating",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "text",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "timestamp",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "title",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "user_id",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      },
+      {
+        "name": "verified_purchase",
+        "records_present": 16287,
+        "coverage_pct": 100.0
+      }
+    ]
+  },
+  "treated": {
+    "products": 8000,
+    "reviews": 16229
+  },
+  "period_definition": {
+    "old_max_year_quantile_20": 2015.0,
+    "recent_min_year_quantile_80": 2021.0
+  },
+  "price_interpretation": "Preço atual não comparado temporalmente: a fonte fornece um snapshot por produto.",
+  "quality": {
+    "products_price_missing_pct": 57.09,
+    "reviews_text_empty_pct": 0.05,
+    "imputation": "Mediana de preço por família; fallback para mediana global. Marca vazia vira unknown. Votos úteis nulos viram 0.",
+    "positive_class_pct": 82.35,
+    "rating_counts": {
+      "1.0": 1288,
+      "2.0": 613,
+      "3.0": 964,
+      "4.0": 2095,
+      "5.0": 11269
+    },
+    "rejections": 59,
+    "rejection_reasons": {
+      "duplicate_review": 58,
+      "invalid_price": 1
+    }
+  },
+  "inflation_estimate_pct": null
+}

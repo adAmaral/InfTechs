@@ -1,0 +1,189 @@
+{
+  "run_id": "98c757a2e4b94f5ba90be1717ca64558",
+  "source_mode": "stream",
+  "n_total": 16229,
+  "n_train": 12837,
+  "n_test": 3392,
+  "positive_rate_train": 0.8233,
+  "positive_rate_test": 0.824,
+  "unique_products_train": 1774,
+  "unique_products_test": 592,
+  "product_overlap": 0,
+  "metrics": [
+    {
+      "model": "dummy_most_frequent",
+      "accuracy": 0.824,
+      "balanced_accuracy": 0.5,
+      "precision_positive": 0.824,
+      "recall_positive": 1.0,
+      "f1_positive": 0.9035,
+      "f1_macro": 0.4518
+    },
+    {
+      "model": "logistic_balanced",
+      "accuracy": 0.5472,
+      "balanced_accuracy": 0.6021,
+      "precision_positive": 0.8855,
+      "recall_positive": 0.5174,
+      "f1_positive": 0.6531,
+      "f1_macro": 0.5006
+    },
+    {
+      "model": "random_forest_balanced",
+      "accuracy": 0.5991,
+      "balanced_accuracy": 0.6065,
+      "precision_positive": 0.8794,
+      "recall_positive": 0.595,
+      "f1_positive": 0.7098,
+      "f1_macro": 0.5308
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "accuracy": 0.8234,
+      "balanced_accuracy": 0.4996,
+      "precision_positive": 0.8239,
+      "recall_positive": 0.9993,
+      "f1_positive": 0.9032,
+      "f1_macro": 0.4516
+    },
+    {
+      "model": "tfidf_logistic_balanced",
+      "accuracy": 0.8859,
+      "balanced_accuracy": 0.8715,
+      "precision_positive": 0.9652,
+      "recall_positive": 0.8937,
+      "f1_positive": 0.9281,
+      "f1_macro": 0.8259
+    }
+  ],
+  "winner": "tfidf_logistic_balanced",
+  "beats_baseline": true,
+  "classification_report": "                   precision    recall  f1-score   support\n\nnão positiva (<4)       0.63      0.85      0.72       597\n   positiva (>=4)       0.97      0.89      0.93      2795\n\n         accuracy                           0.89      3392\n        macro avg       0.80      0.87      0.83      3392\n     weighted avg       0.91      0.89      0.89      3392\n",
+  "confusion_matrix": [
+    [
+      507,
+      90
+    ],
+    [
+      297,
+      2498
+    ]
+  ],
+  "by_family": [
+    {
+      "component_family": "case",
+      "n": 35,
+      "accuracy": 0.6857,
+      "balanced_accuracy": 0.6795,
+      "precision_positive": 0.8571,
+      "recall_positive": 0.6923,
+      "f1_positive": 0.766,
+      "f1_macro": 0.6438
+    },
+    {
+      "component_family": "cooling",
+      "n": 340,
+      "accuracy": 0.8412,
+      "balanced_accuracy": 0.7902,
+      "precision_positive": 0.9389,
+      "recall_positive": 0.8662,
+      "f1_positive": 0.9011,
+      "f1_macro": 0.7491
+    },
+    {
+      "component_family": "cpu",
+      "n": 69,
+      "accuracy": 0.8696,
+      "balanced_accuracy": 0.8532,
+      "precision_positive": 0.9821,
+      "recall_positive": 0.873,
+      "f1_positive": 0.9244,
+      "f1_macro": 0.7253
+    },
+    {
+      "component_family": "gpu",
+      "n": 184,
+      "accuracy": 0.913,
+      "balanced_accuracy": 0.8083,
+      "precision_positive": 0.95,
+      "recall_positive": 0.95,
+      "f1_positive": 0.95,
+      "f1_macro": 0.8083
+    },
+    {
+      "component_family": "motherboard",
+      "n": 58,
+      "accuracy": 0.8621,
+      "balanced_accuracy": 0.7979,
+      "precision_positive": 0.9348,
+      "recall_positive": 0.8958,
+      "f1_positive": 0.9149,
+      "f1_macro": 0.7756
+    },
+    {
+      "component_family": "peripherals",
+      "n": 1342,
+      "accuracy": 0.8748,
+      "balanced_accuracy": 0.8794,
+      "precision_positive": 0.9665,
+      "recall_positive": 0.8715,
+      "f1_positive": 0.9165,
+      "f1_macro": 0.8333
+    },
+    {
+      "component_family": "power_supply",
+      "n": 59,
+      "accuracy": 0.8983,
+      "balanced_accuracy": 0.7956,
+      "precision_positive": 0.9608,
+      "recall_positive": 0.9245,
+      "f1_positive": 0.9423,
+      "f1_macro": 0.7569
+    },
+    {
+      "component_family": "ram",
+      "n": 245,
+      "accuracy": 0.9265,
+      "balanced_accuracy": 0.8882,
+      "precision_positive": 0.981,
+      "recall_positive": 0.9364,
+      "f1_positive": 0.9581,
+      "f1_macro": 0.8291
+    },
+    {
+      "component_family": "storage",
+      "n": 1060,
+      "accuracy": 0.9085,
+      "balanced_accuracy": 0.8976,
+      "precision_positive": 0.9746,
+      "recall_positive": 0.9139,
+      "f1_positive": 0.9433,
+      "f1_macro": 0.8531
+    }
+  ],
+  "justification": {
+    "task": "Classificar como positiva (nota >= 4) ou não positiva uma avaliação cujo texto já está disponível.",
+    "prediction_scope": "Classificação da avaliação após sua publicação; não é recomendação nem previsão pré-compra.",
+    "split": "Holdout aleatório agrupado por product_id (75%/25% aproximado); nenhum produto aparece nos dois conjuntos.",
+    "features": "Modelos estruturados usam preço original com imputação ajustada no treino, indicador de preço ausente, família, marca, compra verificada, tamanho do texto e ano. TF-IDF usa título e texto da avaliação.",
+    "imbalance": "Taxa positiva no treino=0.823, teste=0.824. Regressão logística e floresta usam class_weight=balanced; comparação usa acurácia balanceada e F1 macro, além do baseline majoritário.",
+    "winner": "tfidf_logistic_balanced",
+    "beats_baseline": true,
+    "model_artifact_saved": true,
+    "why": "Maior acurácia balanceada entre os modelos não triviais, com F1 macro como desempate.",
+    "top_brands_from_train": [
+      "western digital",
+      "logitech",
+      "amazon basics",
+      "asus",
+      "corsair",
+      "toshiba",
+      "cooler master",
+      "samsung",
+      "crucial",
+      "cable matters",
+      "seagate",
+      "hp"
+    ]
+  }
+}

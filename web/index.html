@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfTechs — bancada de peças</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #d7e0e6;
+      --ink: #14202b;
+      --muted: #4d5d6b;
+      --panel: #f5f8fa;
+      --line: #8fa0ad;
+      --accent: #0f4c81;
+      --solder: #c45c26;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", sans-serif; }
+    body { min-height: 100vh; }
+    .wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    aside {
+      background: #14202b;
+      color: #d7e0e6;
+      padding: 2rem 1.25rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    aside .mark { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; letter-spacing: 0.08em; color: #9ec0df; }
+    aside h1 { font-size: 1.35rem; font-weight: 600; margin: 0.4rem 0 1.5rem; line-height: 1.2; }
+    aside p { color: #b7c4ce; font-size: 0.92rem; line-height: 1.45; }
+    aside nav { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+    aside a { color: #d7e0e6; text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid transparent; }
+    aside a:hover, aside a:focus { border-bottom-color: #c45c26; }
+    main { padding: 2rem 2.2rem 4rem; max-width: 1100px; }
+    h2 { font-size: 1.35rem; font-weight: 600; margin: 2.2rem 0 0.6rem; }
+    p.lead { font-size: 1.05rem; max-width: 62ch; line-height: 1.5; color: var(--muted); }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--ink); background: var(--panel); margin-top: 1.4rem; }
+    .kpi { padding: 1rem 1.1rem; border-right: 1px solid var(--line); }
+    .kpi:last-child { border-right: 0; }
+    .kpi b { display: block; font-family: "IBM Plex Mono", monospace; font-size: 1.45rem; font-weight: 500; }
+    .kpi span { color: var(--muted); font-size: 0.88rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 0.92rem; }
+    th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); }
+    th { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; font-weight: 500; color: var(--accent); }
+    .toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.8rem 0; }
+    input, select { font: inherit; padding: 0.4rem 0.55rem; border: 1px solid var(--ink); background: #fff; }
+    .note { border-left: 4px solid var(--solder); padding: 0.4rem 0 0.4rem 0.8rem; color: var(--muted); max-width: 70ch; }
+    figure { margin: 1rem 0 0; }
+    figure img { max-width: 100%; height: auto; border: 1px solid var(--ink); background: #fff; }
+    figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; }
+    .empty { padding: 1rem; background: var(--panel); border: 1px dashed var(--line); }
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+      aside { height: auto; position: relative; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      .kpi { border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside>
+      <div class="mark">INFTECHS / CRISP-DM</div>
+      <h1>Bancada de peças</h1>
+      <p>Comparação de componentes a partir de avaliações Amazon Reviews 2023. Preço isolado é snapshot, não inflação.</p>
+      <nav>
+        <a href="#familia">Famílias</a>
+        <a href="#figuras">Figuras</a>
+        <a href="#modelo">Modelo</a>
+      </nav>
+    </aside>
+    <main>
+      <p class="lead" id="resumo"></p>
+      <div class="kpis" id="kpis"></div>
+      <p class="note" id="preco-nota"></p>
+
+      <h2 id="familia">Famílias e equivalências</h2>
+      <div class="toolbar">
+        <label>Família <select id="family"></select></label>
+        <label>Busca <input id="q" type="search" placeholder="marca ou família"></label>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Família</th><th>Período</th><th>Avaliações</th><th>Nota</th><th>% positivas</th><th>% verificadas</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <h2 id="figuras">Comportamento dos dados</h2>
+      <figure>
+        <img src="../reports/figures/01_rating_distribution.png" alt="Distribuição das notas">
+        <figcaption>Notas concentradas em 4 e 5 — motivo para acurácia balanceada.</figcaption>
+      </figure>
+      <figure>
+        <img src="../reports/figures/04_rating_old_recent.png" alt="Notas antigas versus recentes">
+        <figcaption>Mudança de nota entre o quantil antigo e o recente das avaliações.</figcaption>
+      </figure>
+      <figure>
+        <img src="../reports/figures/09_model_comparison.png" alt="Comparação de modelos">
+        <figcaption>Baseline majoritário, modelos estruturados e TF-IDF + regressão logística.</figcaption>
+      </figure>
+
+      <h2 id="modelo">Escolha do modelo</h2>
+      <p id="winner"></p>
+      <table>
+        <thead><tr><th>Modelo</th><th>Acurácia bal.</th><th>F1</th><th>Precisão</th><th>Revocação</th></tr></thead>
+        <tbody id="models"></tbody>
+      </table>
+      <p class="note">API FastAPI ficou fora deste ciclo (item opcional da disciplina).</p>
+    </main>
+  </div>
+  <script>
+    const DATA = {"dataset_version": "98c757a2e4b94f5ba90be1717ca64558", "run_id": "98c757a2e4b94f5ba90be1717ca64558", "source_mode": "stream", "source": "Amazon Reviews 2023", "report_status": "ready", "products": 8000, "reviews": 16229, "positive_pct": 82.35, "price_missing_pct": 57.09, "rejections": 59, "price_note": "Preço atual não comparado temporalmente: a fonte fornece um snapshot por produto.", "inflation_estimate_pct": null, "families": [{"component_family": "case", "period": "middle", "reviews": 163, "avg_rating": 4.2331, "median_rating": 5.0, "verified_pct": 92.64, "avg_helpful_votes": 0.0, "avg_text_length": 449.36, "positive_pct": 80.37, "first_year": 2016, "last_year": 2020}, {"component_family": "case", "period": "old", "reviews": 56, "avg_rating": 4.4821, "median_rating": 5.0, "verified_pct": 85.71, "avg_helpful_votes": 0.0, "avg_text_length": 670.11, "positive_pct": 89.29, "first_year": 2007, "last_year": 2015}, {"component_family": "case", "period": "recent", "reviews": 69, "avg_rating": 4.3913, "median_rating": 5.0, "verified_pct": 94.2, "avg_helpful_votes": 0.0, "avg_text_length": 505.03, "positive_pct": 84.06, "first_year": 2021, "last_year": 2023}, {"component_family": "cooling", "period": "middle", "reviews": 705, "avg_rating": 4.4043, "median_rating": 5.0, "verified_pct": 95.6, "avg_helpful_votes": 0.0, "avg_text_length": 284.37, "positive_pct": 84.4, "first_year": 2016, "last_year": 2020}, {"component_family": "cooling", "period": "old", "reviews": 297, "avg_rating": 4.4074, "median_rating": 5.0, "verified_pct": 94.95, "avg_helpful_votes": 0.0, "avg_text_length": 357.72, "positive_pct": 86.53, "first_year": 2008, "last_year": 2015}, {"component_family": "cooling", "period": "recent", "reviews": 379, "avg_rating": 4.2137, "median_rating": 5.0, "verified_pct": 92.61, "avg_helpful_votes": 0.0, "avg_text_length": 356.39, "positive_pct": 77.57, "first_year": 2021, "last_year": 2023}, {"component_family": "cpu", "period": "middle", "reviews": 91, "avg_rating": 4.5055, "median_rating": 5.0, "verified_pct": 92.31, "avg_helpful_votes": 0.0, "avg_text_length": 325.22, "positive_pct": 89.01, "first_year": 2016, "last_year": 2020}, {"component_family": "cpu", "period": "old", "reviews": 29, "avg_rating": 4.3793, "median_rating": 5.0, "verified_pct": 86.21, "avg_helpful_votes": 0.0, "avg_text_length": 664.17, "positive_pct": 79.31, "first_year": 2008, "last_year": 2015}, {"component_family": "cpu", "period": "recent", "reviews": 57, "avg_rating": 4.4737, "median_rating": 5.0, "verified_pct": 82.46, "avg_helpful_votes": 0.0, "avg_text_length": 649.72, "positive_pct": 91.23, "first_year": 2021, "last_year": 2023}, {"component_family": "gpu", "period": "middle", "reviews": 394, "avg_rating": 4.4162, "median_rating": 5.0, "verified_pct": 94.92, "avg_helpful_votes": 0.0, "avg_text_length": 341.7, "positive_pct": 85.03, "first_year": 2016, "last_year": 2020}, {"component_family": "gpu", "period": "old", "reviews": 105, "avg_rating": 4.3714, "median_rating": 5.0, "verified_pct": 86.67, "avg_helpful_votes": 0.0, "avg_text_length": 533.58, "positive_pct": 83.81, "first_year": 2007, "last_year": 2015}, {"component_family": "gpu", "period": "recent", "reviews": 78, "avg_rating": 4.1667, "median_rating": 5.0, "verified_pct": 88.46, "avg_helpful_votes": 0.0, "avg_text_length": 385.67, "positive_pct": 75.64, "first_year": 2021, "last_year": 2023}, {"component_family": "motherboard", "period": "middle", "reviews": 140, "avg_rating": 3.9929, "median_rating": 5.0, "verified_pct": 92.86, "avg_helpful_votes": 0.0, "avg_text_length": 356.39, "positive_pct": 75.0, "first_year": 2016, "last_year": 2020}, {"component_family": "motherboard", "period": "old", "reviews": 41, "avg_rating": 4.0244, "median_rating": 5.0, "verified_pct": 85.37, "avg_helpful_votes": 0.0, "avg_text_length": 846.54, "positive_pct": 78.05, "first_year": 2007, "last_year": 2015}, {"component_family": "motherboard", "period": "recent", "reviews": 74, "avg_rating": 4.2162, "median_rating": 5.0, "verified_pct": 95.95, "avg_helpful_votes": 0.0, "avg_text_length": 482.35, "positive_pct": 79.73, "first_year": 2021, "last_year": 2023}, {"component_family": "peripherals", "period": "middle", "reviews": 3111, "avg_rating": 4.2321, "median_rating": 5.0, "verified_pct": 90.74, "avg_helpful_votes": 0.0, "avg_text_length": 280.98, "positive_pct": 79.68, "first_year": 2016, "last_year": 2020}, {"component_family": "peripherals", "period": "old", "reviews": 1730, "avg_rating": 4.2671, "median_rating": 5.0, "verified_pct": 88.73, "avg_helpful_votes": 0.0, "avg_text_length": 422.67, "positive_pct": 80.98, "first_year": 2000, "last_year": 2015}, {"component_family": "peripherals", "period": "recent", "reviews": 2061, "avg_rating": 4.1164, "median_rating": 5.0, "verified_pct": 87.82, "avg_helpful_votes": 0.0, "avg_text_length": 340.18, "positive_pct": 75.69, "first_year": 2021, "last_year": 2023}, {"component_family": "power_supply", "period": "middle", "reviews": 133, "avg_rating": 4.4286, "median_rating": 5.0, "verified_pct": 96.99, "avg_helpful_votes": 0.0, "avg_text_length": 259.14, "positive_pct": 85.71, "first_year": 2016, "last_year": 2020}, {"component_family": "power_supply", "period": "old", "reviews": 89, "avg_rating": 4.236, "median_rating": 5.0, "verified_pct": 88.76, "avg_helpful_votes": 0.0, "avg_text_length": 415.46, "positive_pct": 82.02, "first_year": 2009, "last_year": 2015}, {"component_family": "power_supply", "period": "recent", "reviews": 51, "avg_rating": 4.2353, "median_rating": 5.0, "verified_pct": 94.12, "avg_helpful_votes": 0.0, "avg_text_length": 185.41, "positive_pct": 82.35, "first_year": 2021, "last_year": 2023}, {"component_family": "ram", "period": "middle", "reviews": 553, "avg_rating": 4.6962, "median_rating": 5.0, "verified_pct": 98.19, "avg_helpful_votes": 0.0, "avg_text_length": 168.25, "positive_pct": 92.22, "first_year": 2016, "last_year": 2020}, {"component_family": "ram", "period": "old", "reviews": 307, "avg_rating": 4.5961, "median_rating": 5.0, "verified_pct": 93.81, "avg_helpful_votes": 0.0, "avg_text_length": 259.82, "positive_pct": 90.88, "first_year": 2006, "last_year": 2015}, {"component_family": "ram", "period": "recent", "reviews": 191, "avg_rating": 4.5026, "median_rating": 5.0, "verified_pct": 93.72, "avg_helpful_votes": 0.0, "avg_text_length": 258.92, "positive_pct": 87.96, "first_year": 2021, "last_year": 2023}, {"component_family": "storage", "period": "middle", "reviews": 2691, "avg_rating": 4.4812, "median_rating": 5.0, "verified_pct": 93.27, "avg_helpful_votes": 0.0, "avg_text_length": 235.43, "positive_pct": 86.77, "first_year": 2016, "last_year": 2020}, {"component_family": "storage", "period": "old", "reviews": 1432, "avg_rating": 4.3708, "median_rating": 5.0, "verified_pct": 89.94, "avg_helpful_votes": 0.0, "avg_text_length": 343.98, "positive_pct": 84.85, "first_year": 2004, "last_year": 2015}, {"component_family": "storage", "period": "recent", "reviews": 1202, "avg_rating": 4.2629, "median_rating": 5.0, "verified_pct": 94.43, "avg_helpful_votes": 0.0, "avg_text_length": 256.95, "positive_pct": 80.62, "first_year": 2021, "last_year": 2023}], "price_by_family": [{"component_family": "case", "products": 264, "avg_price_usd": 152.3946268657, "median_price_usd": 99.99, "imputed_price_pct": 74.62, "avg_rating_snapshot": 4.1606060606}, {"component_family": "cooling", "products": 979, "avg_price_usd": 38.0398582996, "median_price_usd": 17.965, "imputed_price_pct": 49.54, "avg_rating_snapshot": 4.1576098059}, {"component_family": "cpu", "products": 318, "avg_price_usd": 349.0537423313, "median_price_usd": 129.95, "imputed_price_pct": 48.74, "avg_rating_snapshot": 4.1556603774}, {"component_family": "gpu", "products": 492, "avg_price_usd": 508.9209047619, "median_price_usd": 198.77, "imputed_price_pct": 57.32, "avg_rating_snapshot": 4.0701219512}, {"component_family": "motherboard", "products": 303, "avg_price_usd": 227.2055474453, "median_price_usd": 178.19, "imputed_price_pct": 54.79, "avg_rating_snapshot": 3.9221122112}, {"component_family": "peripherals", "products": 3180, "avg_price_usd": 98.4233021807, "median_price_usd": 35.99, "imputed_price_pct": 59.62, "avg_rating_snapshot": 3.985408805}, {"component_family": "power_supply", "products": 231, "avg_price_usd": 149.9049450549, "median_price_usd": 89.99, "imputed_price_pct": 60.61, "avg_rating_snapshot": 4.1060606061}, {"component_family": "ram", "products": 796, "avg_price_usd": 82.0366666667, "median_price_usd": 33.74, "imputed_price_pct": 48.37, "avg_rating_snapshot": 4.3368090452}, {"component_family": "storage", "products": 1437, "avg_price_usd": 209.1314583333, "median_price_usd": 75.49, "imputed_price_pct": 59.92, "avg_rating_snapshot": 3.9814892136}], "rating_counts": {"1.0": 1288, "2.0": 613, "3.0": 964, "4.0": 2095, "5.0": 11269}};
+    const METRICS = {"run_id": "98c757a2e4b94f5ba90be1717ca64558", "source_mode": "stream", "n_total": 16229, "n_train": 12837, "n_test": 3392, "positive_rate_train": 0.8233, "positive_rate_test": 0.824, "unique_products_train": 1774, "unique_products_test": 592, "product_overlap": 0, "metrics": [{"model": "dummy_most_frequent", "accuracy": 0.824, "balanced_accuracy": 0.5, "precision_positive": 0.824, "recall_positive": 1.0, "f1_positive": 0.9035, "f1_macro": 0.4518}, {"model": "logistic_balanced", "accuracy": 0.5472, "balanced_accuracy": 0.6021, "precision_positive": 0.8855, "recall_positive": 0.5174, "f1_positive": 0.6531, "f1_macro": 0.5006}, {"model": "random_forest_balanced", "accuracy": 0.5991, "balanced_accuracy": 0.6065, "precision_positive": 0.8794, "recall_positive": 0.595, "f1_positive": 0.7098, "f1_macro": 0.5308}, {"model": "hist_gradient_boosting", "accuracy": 0.8234, "balanced_accuracy": 0.4996, "precision_positive": 0.8239, "recall_positive": 0.9993, "f1_positive": 0.9032, "f1_macro": 0.4516}, {"model": "tfidf_logistic_balanced", "accuracy": 0.8859, "balanced_accuracy": 0.8715, "precision_positive": 0.9652, "recall_positive": 0.8937, "f1_positive": 0.9281, "f1_macro": 0.8259}], "winner": "tfidf_logistic_balanced", "beats_baseline": true, "classification_report": "                   precision    recall  f1-score   support\n\nnão positiva (<4)       0.63      0.85      0.72       597\n   positiva (>=4)       0.97      0.89      0.93      2795\n\n         accuracy                           0.89      3392\n        macro avg       0.80      0.87      0.83      3392\n     weighted avg       0.91      0.89      0.89      3392\n", "confusion_matrix": [[507, 90], [297, 2498]], "by_family": [{"component_family": "case", "n": 35, "accuracy": 0.6857, "balanced_accuracy": 0.6795, "precision_positive": 0.8571, "recall_positive": 0.6923, "f1_positive": 0.766, "f1_macro": 0.6438}, {"component_family": "cooling", "n": 340, "accuracy": 0.8412, "balanced_accuracy": 0.7902, "precision_positive": 0.9389, "recall_positive": 0.8662, "f1_positive": 0.9011, "f1_macro": 0.7491}, {"component_family": "cpu", "n": 69, "accuracy": 0.8696, "balanced_accuracy": 0.8532, "precision_positive": 0.9821, "recall_positive": 0.873, "f1_positive": 0.9244, "f1_macro": 0.7253}, {"component_family": "gpu", "n": 184, "accuracy": 0.913, "balanced_accuracy": 0.8083, "precision_positive": 0.95, "recall_positive": 0.95, "f1_positive": 0.95, "f1_macro": 0.8083}, {"component_family": "motherboard", "n": 58, "accuracy": 0.8621, "balanced_accuracy": 0.7979, "precision_positive": 0.9348, "recall_positive": 0.8958, "f1_positive": 0.9149, "f1_macro": 0.7756}, {"component_family": "peripherals", "n": 1342, "accuracy": 0.8748, "balanced_accuracy": 0.8794, "precision_positive": 0.9665, "recall_positive": 0.8715, "f1_positive": 0.9165, "f1_macro": 0.8333}, {"component_family": "power_supply", "n": 59, "accuracy": 0.8983, "balanced_accuracy": 0.7956, "precision_positive": 0.9608, "recall_positive": 0.9245, "f1_positive": 0.9423, "f1_macro": 0.7569}, {"component_family": "ram", "n": 245, "accuracy": 0.9265, "balanced_accuracy": 0.8882, "precision_positive": 0.981, "recall_positive": 0.9364, "f1_positive": 0.9581, "f1_macro": 0.8291}, {"component_family": "storage", "n": 1060, "accuracy": 0.9085, "balanced_accuracy": 0.8976, "precision_positive": 0.9746, "recall_positive": 0.9139, "f1_positive": 0.9433, "f1_macro": 0.8531}], "justification": {"task": "Classificar como positiva (nota >= 4) ou não positiva uma avaliação cujo texto já está disponível.", "prediction_scope": "Classificação da avaliação após sua publicação; não é recomendação nem previsão pré-compra.", "split": "Holdout aleatório agrupado por product_id (75%/25% aproximado); nenhum produto aparece nos dois conjuntos.", "features": "Modelos estruturados usam preço original com imputação ajustada no treino, indicador de preço ausente, família, marca, compra verificada, tamanho do texto e ano. TF-IDF usa título e texto da avaliação.", "imbalance": "Taxa positiva no treino=0.823, teste=0.824. Regressão logística e floresta usam class_weight=balanced; comparação usa acurácia balanceada e F1 macro, além do baseline majoritário.", "winner": "tfidf_logistic_balanced", "beats_baseline": true, "model_artifact_saved": true, "why": "Maior acurácia balanceada entre os modelos não triviais, com F1 macro como desempate.", "top_brands_from_train": ["western digital", "logitech", "amazon basics", "asus", "corsair", "toshiba", "cooler master", "samsung", "crucial", "cable matters", "seagate", "hp"]}};
+    document.getElementById("resumo").textContent =
+      DATA.reviews.toLocaleString("pt-BR") + " avaliações de " +
+      DATA.products.toLocaleString("pt-BR") + " produtos (" + DATA.source + "). Status " + DATA.report_status + ".";
+    const kpis = [
+      ["Produtos", DATA.products],
+      ["Avaliações", DATA.reviews],
+      ["% positivas", DATA.positive_pct + "%"],
+      ["Preço imputado", DATA.price_missing_pct + "%"]
+    ];
+    document.getElementById("kpis").innerHTML = kpis.map(([l,v]) =>
+      `<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join("");
+    const infl = DATA.inflation_estimate_pct;
+    document.getElementById("preco-nota").textContent = infl == null
+      ? DATA.price_note + " Comparação temporal de preço indisponível neste snapshot."
+      : "Estimativa de variação observada nos pares históricos: " + infl.toFixed(2) + "%. Não é índice oficial de inflação.";
+
+    const families = ["todas", ...new Set((DATA.families || []).map(r => r.component_family))];
+    const sel = document.getElementById("family");
+    families.forEach(f => { const o = document.createElement("option"); o.value = f; o.textContent = f; sel.appendChild(o); });
+    function render() {
+      const q = document.getElementById("q").value.toLowerCase();
+      const fam = sel.value;
+      const rows = (DATA.families || []).filter(r =>
+        (fam === "todas" || r.component_family === fam) &&
+        (r.component_family + " " + r.period).toLowerCase().includes(q)
+      );
+      document.getElementById("rows").innerHTML = rows.length ? rows.map(r =>
+        `<tr><td>${r.component_family}</td><td>${r.period}</td><td>${r.reviews}</td><td>${r.avg_rating}</td><td>${r.positive_pct}</td><td>${r.verified_pct}</td></tr>`
+      ).join("") : `<tr><td colspan="6" class="empty">Nenhuma linha neste filtro.</td></tr>`;
+    }
+    sel.addEventListener("change", render);
+    document.getElementById("q").addEventListener("input", render);
+    render();
+
+    document.getElementById("winner").textContent = METRICS.justification
+      ? ("Modelo adotado: " + METRICS.winner + ". " + METRICS.justification.why)
+      : "Métricas ainda não geradas.";
+    document.getElementById("models").innerHTML = (METRICS.metrics || []).map(m =>
+      `<tr><td>${m.model}</td><td>${m.balanced_accuracy}</td><td>${m.f1}</td><td>${m.precision}</td><td>${m.recall}</td></tr>`
+    ).join("");
+  </script>
+</body>
+</html>

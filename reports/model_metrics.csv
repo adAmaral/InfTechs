@@ -1,0 +1,6 @@
+model,accuracy,balanced_accuracy,precision_positive,recall_positive,f1_positive,f1_macro
+tfidf_logistic_balanced,0.8859,0.8715,0.9652,0.8937,0.9281,0.8259
+random_forest_balanced,0.5991,0.6065,0.8794,0.595,0.7098,0.5308
+logistic_balanced,0.5472,0.6021,0.8855,0.5174,0.6531,0.5006
+dummy_most_frequent,0.824,0.5,0.824,1.0,0.9035,0.4518
+hist_gradient_boosting,0.8234,0.4996,0.8239,0.9993,0.9032,0.4516
